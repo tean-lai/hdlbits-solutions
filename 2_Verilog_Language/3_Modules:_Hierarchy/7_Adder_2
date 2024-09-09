@@ -1,0 +1,23 @@
+module top_module (
+    input [31:0] a,
+    input [31:0] b,
+    output [31:0] sum
+);
+  
+  wire [15:0] sum1, sum2;
+  wire cin1 = 0;
+  wire cin2, cout;
+
+  add16 ins1 ( a[15:0],  b[15:0],  cin1, sum1, cin2 );
+  add16 ins2 ( a[31:16], b[31:16], cin2, sum2, cout );
+  assign sum = { sum2, sum1 };
+
+endmodule
+
+module add1 ( input a, input b, input cin,   output sum, output cout );
+
+  wire a_xor_b = a ^ b;
+  assign sum = a_xor_b ^ cin;
+  assign cout = (a & b) | (a_xor_b & cin);
+
+endmodule
